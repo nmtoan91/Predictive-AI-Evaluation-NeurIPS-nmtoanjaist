@@ -1,0 +1,10 @@
+{
+ "chars": 2000.0,
+ "count": 11532,
+ "digest": "f1ecb8f79f6ae39f1b3ea20b1dff702fed081f6d",
+ "dim": 5,
+ "kind": "llm",
+ "model": "Qwen/Qwen3-4B-Instruct-2507",
+ "name": "llm-Qwen3-4B-Instruct-2507-c2000",
+ "nan_rows": 0
+}

@@ -1,0 +1,31 @@
+{
+  "acquire": "tagcover",
+  "bench_sd": 1.5,
+  "draw_sd": 0.5,
+  "family": "hier",
+  "feat_min_items": 2.0,
+  "feat_prior": 0.1,
+  "feat_sd": 0.3,
+  "features": [
+    "llm"
+  ],
+  "item_sd": 4.0,
+  "llm_budget": 2400.0,
+  "llm_cache": "llm-Qwen3-4B-Instruct-2507-c2000",
+  "llm_call_s": 15.0,
+  "llm_fields": [
+    0,
+    1
+  ],
+  "llm_host_gb": 18.0,
+  "llm_mode": "rating",
+  "llm_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "llm_safe": 1.0,
+  "llm_tokens": 24.0,
+  "pair_sd": 1.0,
+  "prior_mean": -0.5,
+  "shrink": 0.45,
+  "tag_min_count": 2.0,
+  "tag_sd": 1.0,
+  "text_chars": 2000.0
+}
