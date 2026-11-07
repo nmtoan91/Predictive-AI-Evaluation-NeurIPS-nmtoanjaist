@@ -1,6 +1,6 @@
 """Zip submission/ into an archive for the competition (model.py at the root).
 
-    python scripts/make_submission.py                  # -> output/TagCover.zip and its SHA-256
+    python scripts/make_submission.py                  # -> output/LLMDifficulty.zip and its SHA-256
 
 The zip is the same byte for byte for the same files (fixed dates, sorted names).
 """
@@ -36,7 +36,7 @@ def make_zip(source, zip_path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--source", default=os.path.join(ROOT, "submission"))
-    parser.add_argument("--out", default=os.path.join(ROOT, "output", "TagCover.zip"))
+    parser.add_argument("--out", default=os.path.join(ROOT, "output", "LLMDifficulty.zip"))
     args = parser.parse_args()
     names = make_zip(args.source, args.out)
     with open(args.out, "rb") as handle:

@@ -1,4 +1,4 @@
-"""TagCover: the predictor of our PAIEC 2026 submission.
+"""LLMDifficulty: the predictor of our PAIEC 2026 submission.
 
 Numpy at prediction time; torch and transformers only for the optional LLM rater.
 Everything here is a pure function of (input, labeled): the caches hold
@@ -35,8 +35,10 @@ no rating and the predictor answers as the same model without the stage.
 llm_call_s bounds the rating time inside one predict() call, because the
 platform stops a run when one call exceeds its per-call timeout.
 
-ACQUISITION ("tagcover", make_acquire): buy the current candidate when its tag
-group holds the fewest of the pair's labels so far; always buy once the
+ACQUISITION: the submission ships no labeling.py ("random": the platform labels
+the first candidates of each pair's random stream). The tag-balanced rule of the
+report's ablation ("tagcover", make_acquire) buys the current candidate when its
+tag group holds the fewest of the pair's labels so far, and always buys once the
 candidates left are no more than the labels left.
 """
 

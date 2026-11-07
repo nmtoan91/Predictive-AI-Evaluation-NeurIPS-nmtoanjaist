@@ -1,15 +1,14 @@
 {
-  "acquire": "tagcover",
-  "bench_sd": 1.5,
-  "draw_sd": 0.5,
+  "bench_sd": 1.25,
+  "draw_sd": 0.25,
   "family": "hier",
   "feat_min_items": 2.0,
-  "feat_prior": 0.1,
-  "feat_sd": 0.3,
+  "feat_prior": 0.125,
+  "feat_sd": 0.15,
   "features": [
     "llm"
   ],
-  "item_sd": 4.0,
+  "item_sd": 2.0,
   "llm_budget": 2400.0,
   "llm_cache": "llm-Qwen3-4B-Instruct-2507-c2000",
   "llm_call_s": 15.0,
@@ -24,7 +23,7 @@
   "llm_tokens": 24.0,
   "pair_sd": 1.0,
   "prior_mean": -0.5,
-  "shrink": 0.45,
+  "shrink": 0.15,
   "tag_min_count": 2.0,
   "tag_sd": 1.0,
   "text_chars": 2000.0

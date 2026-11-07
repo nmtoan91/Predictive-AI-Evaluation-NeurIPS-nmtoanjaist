@@ -1,4 +1,4 @@
-"""Rate every public item with the LLM rater of TagCover (a GPU is recommended).
+"""Rate every public item with the LLM rater of LLMDifficulty (a GPU is recommended).
 
     python scripts/compute_ratings.py                        # all items, one process
     python scripts/compute_ratings.py --shard 0 --of 4       # one of four parallel jobs

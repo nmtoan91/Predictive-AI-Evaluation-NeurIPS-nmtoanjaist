@@ -9,7 +9,7 @@
   paiec_localfresh   300 draws like paiec_local from that seed
 
 paiec/data.py says what the sampler imitates. The report's estimate of a
-Codabench score is blend = 0.529 sim + 0.471 local.
+Codabench score is blend = 0.524 sim + 0.476 local.
 """
 
 import argparse

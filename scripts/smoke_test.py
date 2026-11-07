@@ -3,7 +3,7 @@
     python scripts/smoke_test.py
 
 Writes a synthetic raw root in the public schema (datasets/smoke/raw), builds a
-local benchmark of three draws from it, scores TagCover (the LLM stage answers
+local benchmark of three draws from it, scores LLMDifficulty (the LLM stage answers
 with neutral ratings, as in the organizers' archive check) and the reference,
 and zips the submission.
 """
@@ -26,12 +26,13 @@ from paiec import data  # noqa: E402
 def main():
     data.make_synthetic_raw(os.path.join(ROOT, "datasets", "smoke", "raw"))
     data.build_benchmark("smoke_draws", raw_root="datasets/smoke/raw", n_episodes=3, seed=0)
-    tagcover, _ = evaluate.evaluate(os.path.join(ROOT, "submission"), "smoke_draws")
+    proposed, _ = evaluate.evaluate(os.path.join(ROOT, "submission"), "smoke_draws")
+    balanced, _ = evaluate.evaluate(os.path.join(ROOT, "submission"), "smoke_draws", ["acquire=tagcover"])
     reference, _ = evaluate.evaluate(os.path.join(ROOT, "reference", "BetaShrinkage"), "smoke_draws")
-    for name, summary in (("TagCover", tagcover), ("BetaShrinkage", reference)):
+    for name, summary in (("LLMDifficulty", proposed), ("tag-balanced labels", balanced), ("BetaShrinkage", reference)):
         if not 0.0 < summary["score"] < 1.0:
             raise SystemExit(f"{name}: Brier ALC {summary['score']} is not a valid score")
-    zip_path = os.path.join(ROOT, "output", "smoke", "TagCover.zip")
+    zip_path = os.path.join(ROOT, "output", "smoke", "LLMDifficulty.zip")
     make_submission.make_zip(os.path.join(ROOT, "submission"), zip_path)
     with zipfile.ZipFile(zip_path) as archive:
         if "model.py" not in archive.namelist():

@@ -1,8 +1,9 @@
 """Score a model on a local benchmark: Brier ALC, lower is better.
 
-    python scripts/evaluate.py --dataset paiec_sim                                # TagCover (submission/)
+    python scripts/evaluate.py --dataset paiec_sim                                # LLMDifficulty (submission/)
     python scripts/evaluate.py --dataset paiec_sim --model reference/BetaShrinkage
     python scripts/evaluate.py --dataset paiec_sim --set "features=[]"           # one setting changed
+    python scripts/evaluate.py --dataset paiec_sim --set acquire=tagcover        # tag-balanced labels
     python scripts/evaluate.py --dataset paiec_sim --compare output/BetaShrinkage_paiec_sim.csv
 
 A model is a directory laid out like the submission archive: model.py with
@@ -10,6 +11,10 @@ predict(input, labeled), optionally labeling.py with acquisition_function, and
 config.json. `--set key=value` changes one setting of config.json (the value is
 read as JSON) in a copy under output/build/. Nothing is fitted on the public
 benchmarks, so no run is scored on a benchmark its model was trained on.
+
+The submission has no labeling.py, so its labels are the first candidates of each
+pair's random stream. `--set acquire=tagcover` adds the labeling.py of the
+tag-balanced rule (paiec_core.make_acquire) to the copy; `acquire=random` removes it.
 
 The LLM ratings of the public items are read from features/ (shipped with the
 repository; scripts/compute_ratings.py rebuilds them), and a missing rating
@@ -41,15 +46,29 @@ COLUMNS = (["episode", "subject_id", "benchmark_id", "source_benchmark", "source
            + [f"brier_b{b}" for b in evaluation.BUDGETS] + [f"labels_b{b}" for b in evaluation.BUDGETS])
 
 
+LABELING = '''"""Tag-balanced label acquisition (config.json: `acquire`); see paiec_core.make_acquire."""
+
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import paiec_core  # noqa: E402
+
+acquisition_function = paiec_core.make_acquire(__file__)
+'''
+
+
 def model_name(model_dir):
     name = os.path.basename(os.path.normpath(model_dir))
-    return "TagCover" if name == "submission" else name
+    return "LLMDifficulty" if name == "submission" else name
 
 
 def stage(model_dir, overrides):
     """(directory to load, settings hash): the model directory itself, or a temporary copy
-    with `overrides` written into its config.json. `acquire=random` also drops labeling.py,
-    which leaves label selection to the platform's uniform sampling."""
+    with `overrides` written into its config.json. An acquisition policy other than
+    `random` adds labeling.py; `random` drops it, which leaves label selection to the
+    platform's uniform sampling."""
     if not overrides:
         return model_dir, ""
     path = os.path.join(model_dir, "config.json")
@@ -70,8 +89,13 @@ def stage(model_dir, overrides):
     shutil.copytree(model_dir, target, ignore=shutil.ignore_patterns("__pycache__"))
     with open(os.path.join(target, "config.json"), "w") as handle:
         json.dump(config, handle, indent=2, sort_keys=True)
-    if config.get("acquire") == "random" and os.path.exists(os.path.join(target, "labeling.py")):
-        os.remove(os.path.join(target, "labeling.py"))
+    labeling = os.path.join(target, "labeling.py")
+    if config.get("acquire", "random") == "random":
+        if os.path.exists(labeling):
+            os.remove(labeling)
+    elif not os.path.exists(labeling):
+        with open(labeling, "w") as handle:
+            handle.write(LABELING)
     return target, tag
 
 
