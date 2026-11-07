@@ -6,7 +6,7 @@ with the scripts that reproduce its local results in the technical report
 > Toan Nguyen-Mau and Van-Nam Huynh. *LLMDifficulty: Hierarchical Bayesian Shrinkage with LLM Difficulty Ratings
 > and Tag Offsets for Predicting AI Benchmark Outcomes.* Technical report, PAIEC 2026 (NeurIPS 2026 workshop).
 
-Codabench submission selected for the final evaluation: **1005726**.
+Codabench submission selected for the final evaluation: **1020707** (archive `LLMDifficulty_56538240__proxy0.1800.zip`).
 
 ## The method in short
 
@@ -107,6 +107,11 @@ tokens, the first 2,000 characters of the item text, one third from the head and
 The prompt is `RATER_PROMPT` in `submission/paiec_core.py`. For local scoring, `features/` holds the ratings of
 all public items, made with the same code; `python scripts/compute_ratings.py` rebuilds them (a GPU is
 recommended for 11,532 texts).
+
+## Earlier version
+
+The first release of this repository (commit 87b3029) held TagCover (`TagCover_c6acf076__proxy0.1812.zip`), the
+archive of the first version of the report. It is the last row of the table above.
 
 ## License
 
